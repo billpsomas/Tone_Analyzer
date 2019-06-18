@@ -1,0 +1,17 @@
+librosa
+numpy
+os
+pandas
+glob
+scipy
+sys
+matplotlib
+tensorflow
+keras
+sklearn
+random
+json
+pydub
+ibm_watson
+re
+xlsxwriter
