@@ -15,3 +15,4 @@ pydub
 ibm_watson
 re
 xlsxwriter
+youtube-dl
