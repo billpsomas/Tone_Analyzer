@@ -12,7 +12,7 @@ os.system('powershell.exe youtube-dl https://www.youtube.com/watch?v=WeOuKguaBec
 #In order to use IBM Cloud you firstly have to get credentials (sign up and get an api key)
 tone_analyzer = ToneAnalyzerV3(
     version='2017-09-21',
-    iam_apikey='0IKhnkogxIch-CLjysQfvIl9KgUCF6evDU22iewT7uih',
+    iam_apikey='insert your key here',
     url='https://gateway-lon.watsonplatform.net/tone-analyzer/api'
 )
 
