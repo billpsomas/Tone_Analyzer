@@ -11,9 +11,9 @@ os.system('powershell.exe youtube-dl https://www.youtube.com/watch?v=WeOuKguaBec
 #Make use of IBM's Watson Tone Analyzer to identify the emotions from the caption file
 #In order to use IBM Cloud you firstly have to get credentials (sign up and get an api key)
 tone_analyzer = ToneAnalyzerV3(
-    version='2017-09-21',
+    version='insert the version you use here',
     iam_apikey='insert your key here',
-    url='https://gateway-lon.watsonplatform.net/tone-analyzer/api'
+    url='insert the url here'
 )
 
 #Create a list containing all the subtitles of the video - all the captions,in a line fashion exactly as they are in the .vtt file
