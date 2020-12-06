@@ -14,16 +14,16 @@ The ```Audio_Speech_Actors_01-24``` folder, which for convenience was uploaded i
 
 Each file follows a 7-part numerical filename convention (e.g., 02-01-06-01-02-01-12.wav), which corresponds to:
 
-- Modality (01 = full-AV, 02 = video-only, 03 = audio-only).<br />
-- Vocal channel (01 = speech, 02 = song).<br />
-- Emotion (01 = neutral, 02 = calm, 03 = happy, 04 = sad, 05 = angry, 06 = fearful, 07 = disgust, 08 = surprised).<br />
-- Emotional intensity (01 = normal, 02 = strong). NOTE: There is no strong intensity for the 'neutral' emotion.<br />
-- Statement (01 = "Kids are talking by the door", 02 = "Dogs are sitting by the door").<br />
-- Repetition (01 = 1st repetition, 02 = 2nd repetition).<br />
-- Actor (01 to 24. Odd numbered actors are male, even numbered actors are female).
+- Modality (**01**=full-AV, **02**=video-only, **03**=audio-only)
+- Vocal channel (**01**=speech, **02**=song)
+- Emotion (**01**=neutral, **02**=calm, **03**=happy, **04**=sad, **05**=angry, **06**=fearful, **07**=disgust, **08**=surprised)
+- Emotional intensity (**01**=normal, **02**=strong). **NOTE**: There is no strong intensity for the 'neutral' emotion
+- Statement (**01**="Kids are talking by the door", **02**="Dogs are sitting by the door")
+- Repetition (**01**=1st repetition, **02**=2nd repetition)
+- Actor (**01** to **24**. Odd numbered actors are male, even numbered actors are female).
 
 ### Models
-Two different types of Deep Learning Networks were used for the Tone Analysis task. The fist one is a Long Short-Term Memory and the second one is a Convolutional Neural Network. Python's librosa library was used for the audio processing. The Mel-frequency cepstral coefficients (MFCCs) were extracted and used to represent the audio data. The dataset of 1440 audio files was split in three: training set (80%), validation set(10%) and test set(10%). Some of the values of the train inputs were zero (these values had occured from the MFCC) and this resulted in problems in training. These values were replaced and the problems dissapeared.
+Two different types of Deep Learning Networks were used for the Tone Analysis task. The fist one is a Long Short-Term Memory and the second one is a Convolutional Neural Network. Python's [librosa](https://librosa.org/doc/latest/index.html) library was used for the audio processing. The Mel-frequency cepstral coefficients (MFCCs) were extracted and used to represent the audio data. The dataset of 1440 audio files was split in three: training set (80%), validation set(10%) and test set(10%). Some of the values of the train inputs were zero (these values had occured from the MFCC) and this resulted in problems in training. These values were replaced and the problems dissapeared.
 
 Both models use ReLU as an activation function in the intermediate layers and softmax activation function in the last layer. Softmax of course is combined with the Categorical Crossentropy as a loss function. RMSProp was tested as an optimizer using different learning rates and different weight decays, but Adam seemed to outperform it, so in the end Adam was used in both models. Data were shuffled before entering the Network.
 
@@ -35,6 +35,6 @@ At the end of the training procedure the model is saved, so that it can be later
 The second approach had as objective to be an end-to-end procedure with the meaning that the dataset will also be created from scratch. YouTube is a top platform with millions or maybe billions of videos, so it seemed like a great idea to download videos from there and convert them to audio.
 
 ### Dataset and Models
-youtube-dl program was used to download videos with its captions and also convert them to .wav. youtube-dl has a ffmpeg dependency - consider downloading its binaries from https://ffmpeg.org and add its path to enviromental variables. Python's pydub library was also used in order to split the big audio file that was selected into hundreds of chunks that would compose the dataset. Splitting the big audio file was not the easiest task. The first thought was to split it uniformly, but this proved to be a bad idea, as most of the chunks contained words that were wrongly cut. The next thought was to split it there where silence (>1s) existed. This resulted in unequal chunks that also couldn't be used, as it was very difficult to match them with their respective text. The third thought, which was also the one implemented, was to cut the big audio file there where the caption file indicated. Regular Expressions were used in order to isolate the hh:mm:ss.msmsms patterns from the caption file. pydub library was again used in order to create the chunks using the spesific start and end points that were extracted from caption file. 
+[youtube-dl](https://youtube-dl.org/) software was used to download videos with its captions and also convert them to .wav. youtube-dl has a ffmpeg dependency, thus consider downloading ffmpeg binaries from [here](https://ffmpeg.org) and add its path to enviromental variables. Python's [pydub](https://github.com/jiaaro/pydub) library was also used in order to split the big audio file that was selected into hundreds of chunks that would compose the dataset. Splitting the big audio file was not the easiest task. The first thought was to split it uniformly, but this proved to be a bad idea, as most of the chunks contained words that were wrongly cut. The next thought was to split it there where silence (>1s) existed. This resulted in unequal chunks that also couldn't be used, as it was very difficult to match them with their respective text. The third thought, which was also the one implemented, was to cut the big audio file there where the caption file indicated. Regular Expressions were used in order to isolate the hh:mm:ss.msmsms patterns from the caption file. pydub library was again used in order to create the chunks using the spesific start and end points that were extracted from caption file. 
 
 IBM's Watson Tone Analyzer (text-based analyzer) was afterwards used in order to identify the emotions from the caption file. These emotions were stored and used as the ground truths of the learning procedure, which follows exactly the same steps as the First Approach. Each chunk follows a 2-part filename convention (e.g. chunk0-02), in which the first number corresponds to a serial number, while the second one corresponds to the encoded emotion (i.e. 02 is the 'Tentative emotion').
